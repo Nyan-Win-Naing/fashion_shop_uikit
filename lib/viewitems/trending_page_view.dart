@@ -3,43 +3,47 @@ import 'package:fashion_shop_uikit/resources/dimens.dart';
 import 'package:flutter/material.dart';
 
 class TrendingPageView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black45,
-          borderRadius: BorderRadius.circular(MARGIN_LARGE),
-          image: const DecorationImage(
-            image: AssetImage(
-              "assets/background.png",
-            ),
-            fit: BoxFit.cover,
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: screenHeight / 2.5,
+      // margin: EdgeInsets.only(right: MARGIN_MEDIUM_3),
+      width: screenWidth / 1.1,
+      decoration: BoxDecoration(
+        color: Colors.black45,
+        borderRadius: BorderRadius.circular(MARGIN_LARGE),
+        image: const DecorationImage(
+          image: AssetImage(
+            "assets/background.png",
           ),
+          fit: BoxFit.cover,
         ),
-        child: Stack(
-          children: [
-            const Align(
-              alignment: Alignment.topRight,
-              child: HeartIconView(),
+      ),
+      child: Stack(
+        children: [
+          const Align(
+            alignment: Alignment.topRight,
+            child: HeartIconView(),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Image.asset(
+              "assets/girl.png",
+              height: 280,
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Image.asset(
-                "assets/girl.png",
-                height: 280,
-              ),
+          ),
+          const Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: MARGIN_LARGE, bottom: MARGIN_LARGE),
+              child: TrendingAndModelDescriptionView(),
             ),
-            const Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: MARGIN_LARGE, bottom: MARGIN_LARGE),
-                child: TrendingAndModelDescriptionView(),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

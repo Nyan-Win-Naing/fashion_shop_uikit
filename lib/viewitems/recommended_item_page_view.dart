@@ -6,9 +6,8 @@ class RecommendedItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-      const EdgeInsets.symmetric(horizontal: MARGIN_MEDIUM_3),
+    return Container(
+      height: MediaQuery.of(context).size.height / 5,
       child: Row(
         children: [
           Expanded(

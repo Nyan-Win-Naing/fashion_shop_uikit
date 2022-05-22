@@ -13,51 +13,101 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isChangeBackgroundColor = false;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final avatarRadius = screenHeight / 28;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                TweenAnimationBuilder(
-                  duration: kAnimationDurationForScreenFadeIn,
-                  builder: (context, double _value, child) => Opacity(
-                    opacity: _value,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MARGIN_LARGE,
-                        vertical: _value * MARGIN_XXLARGE,
-                      ),
-                      child: child,
+      body: AnimatedContainer(
+        duration: kAnimationDurationForScreenFadeIn,
+        color: (isChangeBackgroundColor) ? Colors.black : Colors.white,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: TweenAnimationBuilder(
+                duration: kAnimationDurationForScreenFadeIn,
+                builder: (context, double _value, child) => Opacity(
+                  opacity: _value,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MARGIN_LARGE,
+                      vertical: _value * MARGIN_XXLARGE,
                     ),
+                    child: child,
                   ),
-                  tween: Tween<double>(begin: 0, end: 1),
-                  child: ProfileSectionView(avatarRadius: avatarRadius),
                 ),
-                TrendingSectionView(screenHeight: screenHeight),
-                SizedBox(height: MARGIN_XLARGE),
-                RecommendedSectionView(screenHeight: screenHeight),
-                SizedBox(height: MARGIN_3XLARGE + MARGIN_3XLARGE),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: MARGIN_MEDIUM_3,
-                left: MARGIN_MEDIUM_3,
-                right: MARGIN_MEDIUM_3,
+                tween: Tween<double>(begin: 0, end: 1),
+                child: ProfileSectionView(
+                  avatarRadius: avatarRadius,
+                  isChangeBackgroundColor: isChangeBackgroundColor,
+                  onTap: () {
+                    setState(() {
+                      isChangeBackgroundColor = !isChangeBackgroundColor;
+                    });
+                  },
+                ),
               ),
-              child: BottomNavigationBarSectionView(),
             ),
-          )
-        ],
+            Align(
+              alignment: Alignment.topCenter,
+              child: TweenAnimationBuilder(
+                duration: kAnimationDurationForScreenFadeIn,
+                tween: Tween<double>(begin: 0, end: 1),
+                builder: (context, double _value, child) => Opacity(
+                  opacity: _value,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 140,
+                      left: _value * MARGIN_MEDIUM_3,
+                      right: MARGIN_MEDIUM_3,
+                    ),
+                    child: child,
+                  ),
+                ),
+                child: TrendingSectionView(
+                  screenHeight: screenHeight,
+                  isChangeBackgroundColor: isChangeBackgroundColor,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: TweenAnimationBuilder(
+                duration: kAnimationDurationForScreenFadeIn,
+                tween: Tween<double>(begin: 0, end: 1),
+                builder: (context, double _value, child) => Opacity(
+                  opacity: _value,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: MARGIN_MEDIUM_3,
+                      right: MARGIN_MEDIUM_3,
+                      bottom: _value * MARGIN_XXLARGE,
+                    ),
+                    child: child,
+                  ),
+                ),
+                child: RecommendedSectionView(
+                  screenHeight: screenHeight,
+                  isChangeBackgroundColor: isChangeBackgroundColor,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: MARGIN_MEDIUM_3,
+                  left: MARGIN_MEDIUM_3,
+                  right: MARGIN_MEDIUM_3,
+                ),
+                child: BottomNavigationBarSectionView(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -135,29 +185,23 @@ class RecommendedSectionView extends StatelessWidget {
   const RecommendedSectionView({
     Key? key,
     required this.screenHeight,
+    required this.isChangeBackgroundColor,
   }) : super(key: key);
 
   final double screenHeight;
+  final bool isChangeBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
-          child: TitleAndIndicatorSectionView(title: "Recommended"),
+        TitleAndIndicatorSectionView(
+          title: "Recommended",
+          isChangeBackgroundColor: isChangeBackgroundColor,
         ),
         SizedBox(height: MARGIN_LARGE),
-        Container(
-          height: screenHeight / 5,
-          // color: Colors.blueAccent,
-          child: PageView(
-            children: [
-              RecommendedItemView(),
-              RecommendedItemView(),
-            ],
-          ),
-        )
+        RecommendedItemView(),
       ],
     );
   }
@@ -167,30 +211,31 @@ class TrendingSectionView extends StatelessWidget {
   const TrendingSectionView({
     Key? key,
     required this.screenHeight,
+    required this.isChangeBackgroundColor,
   }) : super(key: key);
 
   final double screenHeight;
+  final bool isChangeBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: MARGIN_LARGE),
-          child: TitleAndIndicatorSectionView(
-            title: "Trending for you",
-          ),
+        TitleAndIndicatorSectionView(
+          title: "Trending for you",
+          isChangeBackgroundColor: isChangeBackgroundColor,
         ),
         SizedBox(height: MARGIN_LARGE),
-        Container(
-          height: screenHeight / 2.5,
-          // color: Colors.blueAccent,
-          child: PageView(
-            children: [
-              TrendingPageView(),
-            ],
-          ),
-        )
+        // Container(
+        //   height: screenHeight / 2.5,
+        //   // color: Colors.blueAccent,
+        //   child: PageView(
+        //     children: [
+        TrendingPageView(),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
@@ -198,8 +243,10 @@ class TrendingSectionView extends StatelessWidget {
 
 class TitleAndIndicatorSectionView extends StatelessWidget {
   final String title;
+  final bool isChangeBackgroundColor;
 
-  TitleAndIndicatorSectionView({required this.title});
+  TitleAndIndicatorSectionView(
+      {required this.title, required this.isChangeBackgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -211,6 +258,7 @@ class TitleAndIndicatorSectionView extends StatelessWidget {
           style: TextStyle(
             fontSize: TEXT_REGULAR_3X,
             fontWeight: FontWeight.w600,
+            color: (isChangeBackgroundColor) ? Colors.white : Colors.black,
           ),
         ),
         DotsIndicator(
@@ -232,9 +280,13 @@ class ProfileSectionView extends StatelessWidget {
   const ProfileSectionView({
     Key? key,
     required this.avatarRadius,
+    required this.onTap,
+    required this.isChangeBackgroundColor,
   }) : super(key: key);
 
   final double avatarRadius;
+  final Function onTap;
+  final bool isChangeBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -260,6 +312,8 @@ class ProfileSectionView extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: TEXT_REGULAR_3X,
+                    color:
+                        (isChangeBackgroundColor) ? Colors.white : Colors.black,
                   ),
                 ),
                 SizedBox(height: MARGIN_SMALL),
@@ -268,6 +322,8 @@ class ProfileSectionView extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: TEXT_REGULAR_3X,
+                    color:
+                        (isChangeBackgroundColor) ? Colors.white : Colors.black,
                   ),
                 ),
               ],
@@ -282,10 +338,15 @@ class ProfileSectionView extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Icon(
-                  Icons.notifications_none,
-                  color: HOME_PAGE_ICON_COLOR,
-                  size: MARGIN_XLARGE + 3,
+                child: GestureDetector(
+                  onTap: () {
+                    this.onTap();
+                  },
+                  child: Icon(
+                    Icons.notifications_none,
+                    color: HOME_PAGE_ICON_COLOR,
+                    size: MARGIN_XLARGE + 3,
+                  ),
                 ),
               ),
               Align(
