@@ -1,5 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:fashion_shop_uikit/dummy/dummy_size_list.dart';
+import 'package:fashion_shop_uikit/explicit_animations/explicit_animation_favourite_button.dart';
+import 'package:fashion_shop_uikit/explicit_animations/explicit_animation_shown_description_button.dart';
 import 'package:fashion_shop_uikit/resources/colors.dart';
 import 'package:fashion_shop_uikit/resources/dimens.dart';
 import 'package:fashion_shop_uikit/viewitems/size_view.dart';
@@ -11,7 +13,11 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          DetailPageSliverAppBar(),
+          DetailPageSliverAppBar(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -30,7 +36,9 @@ class DetailPage extends StatelessWidget {
                 ),
                 SizedBox(height: MARGIN_XLARGE),
                 SizeYourSizeSectionView(),
-                SizedBox(height: MARGIN_XXLARGE,)
+                SizedBox(
+                  height: MARGIN_XXLARGE,
+                )
               ],
             ),
           ),
@@ -65,7 +73,9 @@ class SizeYourSizeSectionView extends StatelessWidget {
             childAspectRatio: 3 / 2.5,
           ),
           itemBuilder: (context, index) {
-            return SizeView(sizeVo: dummySizeList[index],);
+            return SizeView(
+              sizeVo: dummySizeList[index],
+            );
           },
         ),
       ],
@@ -73,23 +83,56 @@ class SizeYourSizeSectionView extends StatelessWidget {
   }
 }
 
-class DescriptionSectionView extends StatelessWidget {
-  const DescriptionSectionView({
-    Key? key,
-  }) : super(key: key);
+class DescriptionSectionView extends StatefulWidget {
+  @override
+  State<DescriptionSectionView> createState() => _DescriptionSectionViewState();
+}
+
+class _DescriptionSectionViewState extends State<DescriptionSectionView> {
+  bool isDescriptionShown = true;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DetailPageTitleView(title: "Descriptions"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Description",
+              style: TextStyle(
+                fontSize: TEXT_REGULAR_3X,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (isAnimationComplete) {
+                  showDescriptionAnimationController.reverse();
+                } else {
+                  showDescriptionAnimationController.forward();
+                }
+                setState(() {
+                  isDescriptionShown = !isDescriptionShown;
+                });
+              },
+              child: ExplicitAnimationShownDescriptionButton(),
+            ),
+          ],
+        ),
         SizedBox(height: MARGIN_MEDIUM_2),
-        Text(
-          "Lorem ipsum dolor sit amet. Et distinctio fuga aut maxime aperiam et Quis atque quo natus nemo eos aspernatur excepturi. Sit dolorum. Et suscipit praesentium quo minima sunt non ullam velit? Non velit",
-          style: TextStyle(
-            color: Color.fromRGBO(159, 159, 159, 1.0),
-            height: 1.4,
-            fontSize: TEXT_REGULAR_2X + 2,
+        AnimatedSize(
+          duration: kAnimationDurationForFavourite,
+          child: Container(
+            height: isDescriptionShown ? null : 0.0,
+            child: Text(
+              "Lorem ipsum dolor sit amet. Et distinctio fuga aut maxime aperiam et Quis atque quo natus nemo eos aspernatur excepturi. Sit dolorum. Et suscipit praesentium quo minima sunt non ullam velit? Non velit",
+              style: TextStyle(
+                color: Color.fromRGBO(159, 159, 159, 1.0),
+                height: 1.4,
+                fontSize: TEXT_REGULAR_2X + 2,
+              ),
+            ),
           ),
         ),
       ],
@@ -195,9 +238,9 @@ class OutfitIdeaTitleView extends StatelessWidget {
 }
 
 class DetailPageSliverAppBar extends StatelessWidget {
-  const DetailPageSliverAppBar({
-    Key? key,
-  }) : super(key: key);
+  final Function onTap;
+
+  DetailPageSliverAppBar({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +261,12 @@ class DetailPageSliverAppBar extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: BackButtonView(),
+                  child: GestureDetector(
+                    onTap: () {
+                      onTap();
+                    },
+                    child: BackButtonView(),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.topRight,
@@ -292,11 +340,7 @@ class FavoriteAndShareIconView extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.favorite,
-            size: MARGIN_XLARGE + 3,
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-          ),
+          ExplicitAnimationFavouriteButton(),
           SizedBox(width: MARGIN_MEDIUM_3),
           Icon(
             Icons.share,

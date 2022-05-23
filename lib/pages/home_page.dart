@@ -1,4 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:fashion_shop_uikit/pages/detail_page.dart';
 import 'package:fashion_shop_uikit/resources/colors.dart';
 import 'package:fashion_shop_uikit/resources/dimens.dart';
 import 'package:fashion_shop_uikit/viewitems/recommended_item_page_view.dart';
@@ -67,9 +68,19 @@ class _HomePageState extends State<HomePage> {
                     child: child,
                   ),
                 ),
-                child: TrendingSectionView(
-                  screenHeight: screenHeight,
-                  isChangeBackgroundColor: isChangeBackgroundColor,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(),
+                      ),
+                    );
+                  },
+                  child: TrendingSectionView(
+                    screenHeight: screenHeight,
+                    isChangeBackgroundColor: isChangeBackgroundColor,
+                  ),
                 ),
               ),
             ),
