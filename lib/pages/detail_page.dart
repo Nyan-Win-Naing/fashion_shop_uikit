@@ -254,8 +254,9 @@ class DetailPageSliverAppBar extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: Image.network(
-                    "https://t3.ftcdn.net/jpg/01/86/11/86/360_F_186118623_aU4BBBH2zzkG7C1EdCAkSNHyNvvssznI.jpg",
+                  child: Image.asset(
+                    "assets/detail_background.png",
+                    // "https://t3.ftcdn.net/jpg/01/86/11/86/360_F_186118623_aU4BBBH2zzkG7C1EdCAkSNHyNvvssznI.jpg",
                     fit: BoxFit.cover,
                   ),
                 ),

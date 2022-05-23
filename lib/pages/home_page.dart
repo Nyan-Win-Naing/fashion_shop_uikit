@@ -26,84 +26,98 @@ class _HomePageState extends State<HomePage> {
         color: (isChangeBackgroundColor) ? Colors.black : Colors.white,
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: TweenAnimationBuilder(
-                duration: kAnimationDurationForScreenFadeIn,
-                builder: (context, double _value, child) => Opacity(
-                  opacity: _value,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MARGIN_LARGE,
-                      vertical: _value * MARGIN_XXLARGE,
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: TweenAnimationBuilder(
+                            duration: kAnimationDurationForScreenFadeIn,
+                            builder: (context, double _value, child) => Opacity(
+                              opacity: _value,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MARGIN_LARGE,
+                                  vertical: _value * MARGIN_XXLARGE,
+                                ),
+                                child: child,
+                              ),
+                            ),
+                            tween: Tween<double>(begin: 0, end: 1),
+                            child: ProfileSectionView(
+                              avatarRadius: avatarRadius,
+                              isChangeBackgroundColor: isChangeBackgroundColor,
+                              onTap: () {
+                                setState(() {
+                                  isChangeBackgroundColor = !isChangeBackgroundColor;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: TweenAnimationBuilder(
+                            duration: kAnimationDurationForScreenFadeIn,
+                            tween: Tween<double>(begin: 0, end: 1),
+                            builder: (context, double _value, child) => Opacity(
+                              opacity: _value,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 140,
+                                  left: _value * MARGIN_MEDIUM_3,
+                                  right: MARGIN_MEDIUM_3,
+                                ),
+                                child: child,
+                              ),
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage(),
+                                  ),
+                                );
+                              },
+                              child: TrendingSectionView(
+                                screenHeight: screenHeight,
+                                isChangeBackgroundColor: isChangeBackgroundColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: TweenAnimationBuilder(
+                            duration: kAnimationDurationForScreenFadeIn,
+                            tween: Tween<double>(begin: 0, end: 1),
+                            builder: (context, double _value, child) => Opacity(
+                              opacity: _value,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: MARGIN_MEDIUM_3,
+                                  right: MARGIN_MEDIUM_3,
+                                  bottom: _value * MARGIN_XXLARGE,
+                                ),
+                                child: child,
+                              ),
+                            ),
+                            child: RecommendedSectionView(
+                              screenHeight: screenHeight,
+                              isChangeBackgroundColor: isChangeBackgroundColor,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    child: child,
                   ),
-                ),
-                tween: Tween<double>(begin: 0, end: 1),
-                child: ProfileSectionView(
-                  avatarRadius: avatarRadius,
-                  isChangeBackgroundColor: isChangeBackgroundColor,
-                  onTap: () {
-                    setState(() {
-                      isChangeBackgroundColor = !isChangeBackgroundColor;
-                    });
-                  },
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: TweenAnimationBuilder(
-                duration: kAnimationDurationForScreenFadeIn,
-                tween: Tween<double>(begin: 0, end: 1),
-                builder: (context, double _value, child) => Opacity(
-                  opacity: _value,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 140,
-                      left: _value * MARGIN_MEDIUM_3,
-                      right: MARGIN_MEDIUM_3,
-                    ),
-                    child: child,
-                  ),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(),
-                      ),
-                    );
-                  },
-                  child: TrendingSectionView(
-                    screenHeight: screenHeight,
-                    isChangeBackgroundColor: isChangeBackgroundColor,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: TweenAnimationBuilder(
-                duration: kAnimationDurationForScreenFadeIn,
-                tween: Tween<double>(begin: 0, end: 1),
-                builder: (context, double _value, child) => Opacity(
-                  opacity: _value,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: MARGIN_MEDIUM_3,
-                      right: MARGIN_MEDIUM_3,
-                      bottom: _value * MARGIN_XXLARGE,
-                    ),
-                    child: child,
-                  ),
-                ),
-                child: RecommendedSectionView(
-                  screenHeight: screenHeight,
-                  isChangeBackgroundColor: isChangeBackgroundColor,
-                ),
+                  SizedBox(height: MARGIN_3XLARGE,)
+                ],
               ),
             ),
             Align(
